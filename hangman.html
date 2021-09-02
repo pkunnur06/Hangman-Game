@@ -1,0 +1,264 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+	.container-fluid{
+		display: grid;
+		justify-content: stretch;
+		align-content: center;
+		align-items: stretch;
+		height:200vh;
+		background-color:green;
+		background-attachment: fixed;
+
+	}
+	.container{
+		height:100vh;
+		display: grid;
+		grid-template-columns: repeat(2, 50%);
+		grid-template-rows: 30%  70%;
+		grid-gap:1px;
+		border-radius: 10px;
+		border: 3px solid black;
+		margin-left: 5px;
+		margin-right: 5px;
+		outline: none;
+		
+	}
+	.container> *{
+		background:url("background-blue.png")
+	}
+	.resultBox{
+		position: relative;
+		grid-row:1/-1;
+		border-radius: 10px;
+		border: 3px solid black;
+	}
+	.alphaBox{
+		display: grid;
+		grid-template-columns: repeat(7, 14%);
+		justify-content: center;
+		align-items: center;
+		border-radius: 10px;
+		border: 3px solid black;
+	}
+	.image1{
+		position: absolute;
+		left:15%;
+		top:100px;
+		width:350px;
+	}
+	/*  hanger */
+	.image2{      
+		position: absolute;
+		left:37%;
+		top:142px;
+		width:60px;
+
+	}
+	/*  head */
+	.image3{
+		position: absolute;
+		left:35.6%;
+		top:246px;
+		width:95px;
+	}
+	/*  shirt */
+	.image4{
+		position: absolute;
+		left:33.6%;
+		top:345px;
+		width:120px;
+	}
+	/*  right hand */
+	.image5{
+		position: absolute;
+		left:30%;
+		top:385px;
+		width:40px;
+	}
+	/*  left hand */
+	.image6{
+		position: absolute;
+		left:48%;
+		top:385px;
+		width:40px;
+	}
+	/*  right leg */
+	.image7{
+		position: absolute;
+		left:37%;
+		top:445px;
+		width:20px;
+	}
+	/*  left leg */
+	.image8{
+		position: absolute;
+		left:44%;
+		top:445px;
+		width:20px;
+	}
+    /*  you lose */
+	.image9{
+		position: absolute; 
+		font-size: 80px;
+		background: skyblue;
+		color: #ee22ee;
+		height:130vh;
+		width:100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.alpha{
+		
+		width:30px;
+		height:30px;
+		background: yellow;
+		border: 2px solid red;
+		border-radius: 40%;
+	}
+	.alpha{
+	        display: flex;
+		justify-content: center;
+		align-items: center;
+			
+	}
+	.wordBox{
+		display: grid;
+		justify-content: center;
+		align-items: center;
+		color: rgb(192, 17, 17);
+		
+	}
+	
+	h2{
+		letter-spacing: 10px;
+		
+	}
+	.disable{
+			background:#eeee;
+			color:#ee22ee;
+	}
+	
+	.text{
+		display: flex;
+		justify-content: space-around;
+		
+		 
+	}
+	.btn{
+        float: right;
+		width:120px;
+		border-radius: 10px;
+		background: darkred;
+	}
+	 
+    </style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="container">
+			<div class="resultBox"></div>
+			<div> 
+				<div class="wordBox"></div>
+				<h2 class="text"> GUESS CITY NAME
+					<button class="btn"onclick=window.location.reload()>TRY NEXT</button>
+				</h2>
+			
+			</div>
+			<div class="alphaBox"></div>
+					
+		</div>
+	</div>
+    <script>
+         window.onload=function(){
+	let images={
+				0:`<img src="body01-head-dead.png" class="image3">`,
+				8:`<img src="frame.png" class="image1">`,
+				7:`<img src="noose.png" class="image2">`,
+				6:`<img src="body01-head.png" class="image3">`,
+				5:`<img src="body01-shirt.png" class="image4">`,
+				4:`<img src="body01-rightarm.png" class="image5">`,
+				3:`<img src="body01-leftarm.png" class="image6">`,
+				2:`<img src="body01-rightleg.png" class="image7">`,
+				1:`<img src="body01-leftleg.png" class="image8">`
+		}
+	
+	let resultBox=document.querySelector(".resultBox")
+	let alphabets="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	let alphaBox=document.querySelector(".alphaBox");
+	let alphaStr='';
+	    for(let i=0; i<alphabets.length; i++){
+		alphaStr +=`<div class="alpha">${alphabets[i]}</div>`		
+		}
+			alphaBox.innerHTML=alphaStr;
+		
+			function handler(value){
+				alert("hi");				
+				}
+		alphaBox.onclick= function(e){
+					//if(e.target && e.target.nodeName.toLowerCase()=="div"); //to access div 
+							//alert(e.target.innerHTML);
+						// to access div class//
+			if(e.target && e.target.className=="alpha"){       
+				let letter=e.target.innerHTML.trim()											//alert(e.target.innerHTML);
+				dword=update(letter,word)
+				//  console.log(dword);
+					updateRes(dword)
+				e.target.classList.add("disable");
+				if(word.includes(letter)){
+					updateRes(dword);
+				}
+				else{
+					updateLife();
+					resultBox.innerHTML+=images[life]
+				}
+				if(life<0){
+					resultBox.innerHTML+=`<div class="image9">YOU LOSE</div>`;
+					document.querySelector('.alphaBox').style.pointerEvents = 'none';
+				}	
+				else{
+					
+							if(word==dword){
+							resultBox.innerHTML+=`<div class="image9">YOU win</div>`;
+							document.querySelector('.alphaBox').style.pointerEvents = 'none';
+							}
+						
+					}
+											//console.log(e.target);
+			}
+		}
+		function genWord(){
+			let words=["hubli","dharwad","kundgol","shiggaon"];
+			let i=Math.floor(Math.random()*words.length)
+					return words[i]
+		}
+		function genDashedString(word){
+			return Array.from(word).map(letter=>"_").join("")
+		}
+		
+		function updateRes(word){
+		let wordBox=document.querySelector(".wordBox")
+			wordBox.innerHTML=`<h2>${word}</h2>`;
+		}
+		function update(letter,word){
+			return Array.from(word).map((l,i)=>l==letter? l:dword[i]).join("")
+		}
+		let life=9;
+		function updateLife(){
+					life--;
+		}
+		
+		let word=genWord().toUpperCase()
+		// console.log(word)
+		let dword=genDashedString(word) 
+		updateRes(dword)
+		
+										//console.log(genDashedString(word)) //to checking perticular function result
+										//console.log(genWord());
+}
+    </script>
+   
+</body>
+</html>
