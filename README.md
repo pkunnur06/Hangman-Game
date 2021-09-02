@@ -1,2 +1,2 @@
 # Hangman-Game
-game
+javascript bigineers small gaming project
